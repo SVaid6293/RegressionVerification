@@ -71,9 +71,9 @@ public class RegressionVerification {
 
 			}
 			//compare code for text files
-			System.out.println("TC::: "+i);
+			System.out.println("TC::: "+i+1);
 			CommonFunctions.compareFiles( CommonFunctions.getTextFiles(folder.listFiles()));
-			
+
 			System.out.println("--------------------");
 
 
@@ -86,7 +86,7 @@ public class RegressionVerification {
 
 	static void getDecData(String str, PrintWriter printWriter) {
 		//Print matching text for given patters.
-		for (String pattern : PatternsDefinition.patterns) {
+		for (String pattern : PatternsDefinition.decPagePatterns) {
 
 			Pattern p = Pattern.compile(pattern);
 			Matcher m = p.matcher(str);
@@ -104,7 +104,7 @@ public class RegressionVerification {
 		for (Integer formNum : formList
 				) {
 			formData = CommonFunctions.pdfToText(pd, formNum.intValue(), formNum.intValue());
-			Pattern p1 = Pattern.compile(PatternsDefinition.patternForms);
+			Pattern p1 = Pattern.compile(PatternsDefinition.patternForForms);
 			Matcher matcher = p1.matcher(formData);
 
 			while (matcher.find()) {
@@ -125,24 +125,103 @@ public class RegressionVerification {
 			getDecData(worksheetData, printWriter);
 		}
 
-		printWriter.println("\n--Commercial Property Worksheet Data--\n");
+		printWriter.println("\n-------------------------Commercial Property Worksheet Data-------------------------\n");
 		ArrayList<Integer> cpData = CommonFunctions.getPageNumbersFor(pd, "COMMERCIAL PROPERTY", "WORKSHEET");
 		String worksheetDataCP;
-		for (String pattern : PatternsDefinition.worksheetPatternsCP) {
+		for (String patternCP : PatternsDefinition.worksheetPatternsCP) {
 
 			for (Integer wNum : cpData) {
 				worksheetDataCP = CommonFunctions.pdfToText(pd, wNum.intValue(), wNum.intValue());
-				Pattern p = Pattern.compile(pattern);
+				Pattern p = Pattern.compile(patternCP);
 				Matcher m = p.matcher(worksheetDataCP);
 				while (m.find()) {
-					printWriter.println(count + ":" + m.group());
+					String result=m.group();
+					result=result.replaceAll(System.getProperty("line.separator"), "");
+					printWriter.println(count + ":" + result);
+					count++;
+
+				}
+
+			}
+
+		}
+		
+		printWriter.println("\n-------------------------GL Worksheet Data-------------------------\n");
+		ArrayList<Integer> glData = CommonFunctions.getPageNumbersFor(pd, "GENERAL LIABILITY", "WORKSHEET");
+		String worksheetDataGL;
+		for (String patternGL : PatternsDefinition.worksheetPatternsGL) {
+
+			for (Integer wNum : glData) {
+				worksheetDataGL = CommonFunctions.pdfToText(pd, wNum.intValue(), wNum.intValue());
+				Pattern p = Pattern.compile(patternGL);
+				Matcher m = p.matcher(worksheetDataGL);
+				while (m.find()) {
+					String result=m.group();
+					result=result.replaceAll(System.getProperty("line.separator"), "");
+					printWriter.println(count + ":" + result);
 					count++;
 
 				}
 
 			}
 		}
+		printWriter.println("\n-------------------------Auto Worksheet Data-------------------------\n");
+		ArrayList<Integer> autoData = CommonFunctions.getPageNumbersFor(pd, "COMMERCIAL AUTOMOBILE POLICY", "WORKSHEET");
+		String worksheetDataAuto;
+		for (String patternAuto : PatternsDefinition.worksheetPatternsAuto) {
+
+			for (Integer wNum : autoData) {
+				worksheetDataAuto = CommonFunctions.pdfToText(pd, wNum.intValue(), wNum.intValue());
+				Pattern p = Pattern.compile(patternAuto);
+				Matcher m = p.matcher(worksheetDataAuto);
+				while (m.find()) {
+					String result=m.group();
+					result=result.replaceAll(System.getProperty("line.separator"), "");
+					printWriter.println(count + ":" + result);
+					count++;
+
+				}
+				printWriter.println(" ");
+
+			}
+		}
+		printWriter.println("\n-------------------------Crime Worksheet Data-------------------------\n");
+		ArrayList<Integer> crimeData = CommonFunctions.getPageNumbersFor(pd, "COMMERCIAL CRIME AND FIDELITY", "WORKSHEET");
+		String worksheetDataCrime;
+		for (String patternCrime : PatternsDefinition.worksheetPatternsCrime) {
+
+			for (Integer wNum : crimeData) {
+				worksheetDataCrime = CommonFunctions.pdfToText(pd, wNum.intValue(), wNum.intValue());
+				Pattern p = Pattern.compile(patternCrime);
+				Matcher m = p.matcher(worksheetDataCrime);
+				while (m.find()) {
+					String result=m.group();
+					result=result.replaceAll(System.getProperty("line.separator"), "");
+					printWriter.println(count + ":" + result);
+					count++;
+
+				}
+
+			}
+		}
+		printWriter.println("\n-------------------------Inland Marine Worksheet Data-------------------------\n");
+		ArrayList<Integer> inlandMarineData = CommonFunctions.getPageNumbersFor(pd, "COMMERCIAL INLAND MARINE", "WORKSHEET");
+		String worksheetDataIM;
+		for (String patternIM : PatternsDefinition.worksheetPatternsIM) {
+
+			for (Integer wNum : inlandMarineData) {
+				worksheetDataIM = CommonFunctions.pdfToText(pd, wNum.intValue(), wNum.intValue());
+				Pattern p = Pattern.compile(patternIM);
+				Matcher m = p.matcher(worksheetDataIM);
+				while (m.find()) {
+					String result=m.group();
+					result=result.replaceAll(System.getProperty("line.separator"), "");
+					printWriter.println(count + ":" + result);
+					count++;
+				}
+
+			}
+		}
 	}
+
 }
-
-
